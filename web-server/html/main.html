@@ -1,0 +1,230 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Object Detector - DISIT</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap4c-custom-switch@1.1.2/dist/css/component-custom-switch.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+                integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+                crossorigin="anonymous"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/placeholder.js/3.1.0/placeholder.min.js"></script>
+        <style>
+
+            .card-body form{
+                display: flex;
+                flex:1;
+                flex-direction: column;
+                flex-wrap: wrap;
+
+            }
+            .card-body input[type=submit]{
+                margin-top: 15px;
+            }
+        </style>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script>
+
+            function checkIsNumeric(value){
+                if($.isNumeric(value)){
+                    return true;
+                }else{
+
+                    swal ( "Wrong Format" ,  "write a number (0,1,2,3,...)" ,  "error" );
+
+                    return false;
+                }
+            }
+
+            function checkNumericError(key){
+                var value = $('input[name='+key+']').val();
+                if(checkIsNumeric(value)){
+                    $('input[name='+key+']').css('border-color','');
+                    return true;
+                }else{
+                    $('input[name='+key+']').css('border-color','#ef0404');
+                    return false;
+                }
+            }
+
+            $(document).ready(function(){
+               $('input[name=execute]').click(function(){
+
+                   if (!checkNumericError('execution_times')) {
+                       return false;
+                   }
+
+                   var value = $('input[name=execution_times]').val();
+                   console.log(value);
+
+                   if(value == 0 || value < -1){
+                       swal ( "Wrong Format" ,  "write a number (-1,1,2,3,...)" ,  "error" );
+                       return false;
+                   }
+
+
+               });
+
+               $('input[name=stopThread]').click(function(){
+                   if (!checkNumericError('execution_times')) {
+                       return false;
+                   }
+
+               });
+
+               $('.show_execute_result').click(function(){
+                   window.open("/results", '_blank').focus();
+
+               });
+
+               $('input[name=saveBasicSetting]').click(function(){
+
+                   if(!checkNumericError('execution_times_on_startup')){
+                       return false;
+                   }
+
+                   if(!checkNumericError('sleep')){
+                       return false;
+                   }
+
+                   value_onoff = $('input[id=mqtt_on]').prop('checked');
+
+                   $('input[name=mqtt_on]').remove();
+                   if(value_onoff){
+                       $('.basicSettingForm').append('<input type="hidden" name="mqtt_on" value="on">');
+                   }else{
+                       $('.basicSettingForm').append('<input type="hidden" name="mqtt_on" value="off">');
+                   }
+
+               });
+
+                function isUrlValid(url) {
+                    return /^(https?|s?tcp|ssl|ws|wss):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(url);
+
+                }
+
+               $('input[name=save]').click(function(){
+
+                   var value = $('input[name=address]').val();
+                   if(!isUrlValid(value)){
+                       $('input[name=address]').css('border-color','#ef0404');
+                       swal ( "Address not correct" ,  "right format is tcp://xxx.xxx.xxx.xxx" ,  "error" );
+                       return false;
+                   }else{
+                       $('input[name=address]').css('border-color','');
+                   }
+
+                   if(!checkNumericError('port')){
+                       return false;
+                   }
+
+
+                   if(!checkNumericError('qos')){
+                       return false;
+                   }
+
+                   var qosValue = $('input[name=qos]').val();
+
+                   if(qosValue < 0 || qosValue > 2){
+                       $('input[name=qos]').css('border-color','#ef0404');
+                       swal ( "QoS value not correct" ,  "it must be 0,1 or 2" ,  "error" );
+                       return false;
+                   }
+
+                   if(!checkNumericError('timeout')){
+                       return false;
+                   }
+               });
+
+            });
+        </script>
+    </head>
+
+    <body>
+
+        <style>
+            .card{
+                margin-top:10px;
+                margin-bottom:10px;
+            }
+
+
+            .stream-body{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+            }
+
+            label{
+                margin-top: 3px;
+            }
+
+            input{
+                margin-top:2px;
+            }
+
+            .custom-switch-label-onoff{
+                margin-top: 5px;
+            }
+
+        </style>
+        ${CUSTOM_SCRIPT}
+
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    Execution model
+                </div>
+                <div class="card-body">
+                    <form action="/" method="post" class="executionModelForm">
+                        <label>Times: </label>
+                        <div class="row">
+                            <div class="col-md-6 col-6">
+                                <input type="text" name="execution_times" value="1" ${INPUT_EXECUTION_TIMES_STATUS} />
+                            </div>
+                            <div class="col-md-6 col-6">
+                                <input type="button" style="display:${BUTTON_RESULT_STYLE};" target="_blank" class="show_execute_result" name="open_results" value="Open Results"/>
+                            </div>
+                        </div>
+                        <input type="submit" name="${EXECUTE_NAME}" value="${EXECUTE_VALUE}"/>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    Basic Settings
+                </div>
+                <div class="card-body">
+                    <form action="/" method="post" class="basicSettingForm">
+                        <label>Times to execute on startup: </label><input type="text" value="${EXECUTE_TIMES_ON_STARTUP}" name="execution_times_on_startup"/>
+                        <label>Sleep (ms): </label><input type="text" name="sleep" value="${SLEEP}"/>
+                        <label>MQTT Connection: </label>
+                            <div class="custom-switch custom-switch-label-onoff">
+                                <input class="custom-switch-input" id="mqtt_on" type="checkbox" ${MQTT_ON}>
+                                <label class="custom-switch-btn" for="mqtt_on"></label>
+                            </div>
+                        <input type="submit" name="saveBasicSetting" value="Save"/>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    MQTT Client Connection
+                </div>
+                <div class="card-body">
+                    <form action="/" method="post">
+                        <label>Address: </label><input type="text" name="address" value="${ADDRESS}"/>
+                        <label>Port: </label><input type="text" name="port" value="${PORT}" />
+                        <label>Topic Name: </label><input type="text" name="topic_name" value="${TOPIC_NAME}"/>
+                        <label>ClientID: </label><input type="text" name="client_id" value="${CLIENT_ID}"/>
+                        <label>QoS: </label><input type="text" name="qos" value="${QOS}"/>
+                        <label>Timeout Connection (ms): </label><input type="text" name="timeout" value="${TIMEOUT}"/>
+                        <input type="submit" name="save" value="Save and Reconnect"/>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

@@ -1,0 +1,26 @@
+{
+    "schemaVersion": "1.2",
+    "acapPackageConf": {
+        "setup": {
+            "friendlyName": "Object Detector - DISIT",
+            "appName": "disit_app",
+            "vendor": "DISIT",
+            "embeddedSdkVersion": "3.0",
+            "user": {
+                "username": "sdk",
+                "group": "sdk"
+            },
+            "runMode": "never",
+            "version": "1.0.6"
+        },
+        "installation": {
+            "postInstallScript": "postinstall.sh"
+        },
+        "uninstallation": {
+            "preUninstallScript": "preuninstall.sh"
+        },
+        "configuration": {
+            "settingPage": "index.html"
+        }
+    }
+}

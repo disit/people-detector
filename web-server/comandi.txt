@@ -1,0 +1,8 @@
+docker build --tag web-server:armv7hf .
+docker run --rm web-server:armv7hf eap-install.sh 192.168.1.223 Vdc!root install
+docker run --rm web-server:armv7hf eap-install.sh 192.168.1.223 Vdc!root stop
+docker run --rm web-server:armv7hf eap-install.sh 192.168.1.223 Vdc!root remove
+
+docker run -it web-server:armv7hf
+docker create web-server:armv7hf --> codice
+docker cp codice:/opt/monkey/examples ./build

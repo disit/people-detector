@@ -1,0 +1,7 @@
+$ sudo apt-get install build-essential gcc make cmake cmake-gui cmake-curses-gui
+$ sudo apt-get install libssl-dev
+$ sudo apt-get install doxygen graphviz
+$ cmake -Bbuild -H. -DPAHO_ENABLE_TESTING=OFF -DPAHO_BUILD_STATIC=ON \
+    -DPAHO_WITH_SSL=ON -DPAHO_HIGH_PERFORMANCE=ON \
+    -DCMAKE_INSTALL_PREFIX=./build/_install
+sudo cmake --build build/ --target install

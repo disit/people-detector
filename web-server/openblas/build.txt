@@ -1,0 +1,5 @@
+sudo apt install build-essential g++ gfortran git -y
+git clone https://github.com/xianyi/OpenBLAS
+cd OpenBLAS
+make TARGET=ARMV7 NOFORTRAN=1
+make install

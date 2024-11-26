@@ -1,0 +1,9 @@
+tcp://localhost
+1883
+disit/object_detection
+testClientID
+0
+10000
+1
+5000
+on

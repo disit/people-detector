@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>In Caricamento - DISIT</title>
+    <script src="jquery-3.6.0.min.js"></script>
+    <script>
+        function urlExists(url, callback){
+            $.ajax({
+                url: url,
+                dataType: 'jsonp',
+                statusCode: {
+                    200: function() {
+                        callback(true);
+                    },
+                    404: function() {
+                        callback(false);
+                    }
+                },
+                error:function(){
+                    console.log("Error");
+                }
+            });
+        }
+
+        hostname = window.location.hostname;
+        var toRedirect = window.location.protocol + "//" + hostname + ":2001";
+
+        urlExists(toRedirect, function(status){
+            if(status == true){
+                window.location.href = toRedirect;
+            }
+            else{
+                $('div#loading').append("<p style='color:#952b2b;'>L'applicazione deve essere abilitata per funzionare!</p>");
+            }
+        });
+
+    </script>
+    <style>
+        body{
+            height: 100vh;
+        }
+        p{
+            font-size: 35px;
+            text-align: center;
+        }
+        #loading{
+            display: flex;
+            flex:1;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">
+        <img src="loading_icon.gif" alt="Loading Image"/>
+        <p>In Caricamento...</p>
+    </div>
+</body>
+</html>
